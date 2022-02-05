@@ -2,8 +2,3 @@
     border: solid 1px #dedede;
     box-shadow: 0 0.75em 30px rgb(26 26 26 / 15%);
   }
-
-.button-rounded{
-  border-radius: 10px !important;
-  width: 150px;
-}

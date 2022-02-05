@@ -1,4 +1,88 @@
-<div class="row">
-    <div class="col-md-6">ABC</div>
-    <div class="col-md-6">        DEF</div>
+<div class="row m-1">
+    <div class="col-md-12">
+        <div class="profile-container p-5">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <h5>Printable Object Counter</h5>
+           <form [formGroup]="printObjectForm">
+                <div class="row mt-5">
+                    <div class="col-md-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isNeumericCount" name="isNeumericCount" formControlName="isNeumericCount">
+                            <label class="form-check-label" for="isNeumericCount">
+                              Numeric
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isAlphaneumericCount"  checked name="isAlphaneumericCount" formControlName="isAlphaneumericCount">
+                            <label class="form-check-label" for="isAlphaneumericCount">
+                              Alphaneumeric
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isFloatCount" checked name="isFloatCount" formControlName="isFloatCount">
+                            <label class="form-check-label" for="isFloatCount">
+                              Float
+                            </label>
+                          </div>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="col-md-6 mb-5">
+                        <label for="subject">Size of the output file(KB)</label><span class="required-field">*</span>
+                        <input type="number" class="form-control" id="fileSize" name="fileSize"
+                            placeholder="File size" formControlName="fileSize">
+                      </div>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                  <div class="col-md-12">
+                    <button type="button" class="btn btn-success button-rounded" (click)="startCounting()">
+                      Start
+                    </button>
+                    <button type="button" class="btn btn-danger button-rounded ml-5" (click)="stopCounting()">
+                      Stop
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                      <label for="notesService" class="float-end">Counter 1 (Numeric)</label>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                      <input type="number" class="form-control percent-field" name="neumericCount" formControlName='neumericCount' readonly/>
+                  </div>                       
+              </div>
+
+              <div class="row form-group">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                    <label for="notesService" class="float-end">Counter 2 (Alphanumeric)</label>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                    <input type="number" class="form-control percent-field" name="alphaNeumericCount" formControlName='alphaNeumericCount' readonly/>
+                </div>                       
+             </div>
+
+            <div class="row form-group">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                  <label for="notesService" class="float-end">Counter 3 (Float)</label>
+              </div>
+              <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+                  <input type="number" class="form-control percent-field" name="floatCount" formControlName='floatCount' readonly/>
+              </div>                       
+          </div>
+          <div class="row mb-5">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary button-rounded" (click)="generateReport()">
+                Generate Report
+              </button>
+            </div>
+          </div>
+           </form>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>

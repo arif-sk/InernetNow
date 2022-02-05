@@ -1,0 +1,40 @@
+<div class="row m-1">
+    <div class="col-md-12">
+        <div class="profile-container p-5">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                  <button type="button" style="float: right;" class="btn btn-sm btn-embossed btn-success" 
+                    (click)="backPrintableObjectCounter()"><i class="fa fa-backward"></i> Back</button>
+                </div>
+            </div>
+            <div class="text-center mb-2">
+                <h6 class="">Distribution of data type in the file</h6>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">% Numeric</th>
+                            <th scope="col">% Alphanumeric</th>
+                            <th scope="col">% Float</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{fileContentModel.contentItems.length > 0 ? ((fileContentModel.neumericCount * 100) / (fileContentModel.neumericCount + fileContentModel.alphaneumericCount + fileContentModel.floatCount)).toFixed(2) : 0}}</td>
+                            <td>{{fileContentModel.contentItems.length > 0 ? ((fileContentModel.alphaneumericCount * 100) / (fileContentModel.neumericCount + fileContentModel.alphaneumericCount + fileContentModel.floatCount)).toFixed(2): 0}}</td>
+                            <td>{{fileContentModel.contentItems.length > 0 ? ((fileContentModel.floatCount * 100) / (fileContentModel.neumericCount + fileContentModel.alphaneumericCount + fileContentModel.floatCount)).toFixed(2): 0}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p *ngFor="let i of fileContentModel.contentItems">{{i}}</p>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
