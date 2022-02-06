@@ -6,7 +6,7 @@ import { PrintObjectViewModel } from '../Model/common.viewmodel';
   providedIn: 'root',
 })
 export class PrintObjectService {
-  private apiUrl = 'http://localhost:5000/api/pringobject/';
+  private apiUrl = 'http://localhost:5000/api/printobject/';
 
   constructor(private http: HttpClient) {}
 
@@ -19,5 +19,8 @@ export class PrintObjectService {
   }
   generateReport() {
     return this.http.get(this.apiUrl + 'generatereport');
+  }
+  getObjectCount() {
+    return this.http.get(this.apiUrl + 'broadcastcounter');
   }
 }

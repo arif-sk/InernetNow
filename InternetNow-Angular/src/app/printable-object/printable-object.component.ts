@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
-import { PrintObjectViewModel } from '../Model/common.viewmodel';
+import { throwError, interval, Subscription } from 'rxjs';
+import { ObjectCountViewModel, PrintObjectViewModel } from '../Model/common.viewmodel';
 import { PrintObjectService } from '../services/print-object.service';
-
+import * as signalR from '@microsoft/signalr';
 @Component({
   selector: 'app-printable-object',
   templateUrl: './printable-object.component.html',
   styleUrls: ['./printable-object.component.css'],
 })
 export class PrintableObjectComponent implements OnInit {
+  subscription: Subscription;
+  objectCountModel: ObjectCountViewModel = new ObjectCountViewModel();
   printObjectForm= new FormGroup({
     'fileSize': new FormControl(''),
     'isNeumericCount': new FormControl(true),
@@ -25,7 +27,40 @@ export class PrintableObjectComponent implements OnInit {
     private router: Router) {
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    
+    const source = interval(1000);
+    this.subscription = source.subscribe(val => this.getObjectCount());
+
+    const connection = new signalR.HubConnectionBuilder()
+			.configureLogging(signalR.LogLevel.Information)
+			.withUrl("http://localhost:5000/notify")
+			.build();
+
+		connection.start().then(function () {
+		}).catch(function (err) {
+			throwError(err);
+		});
+
+		connection.on("BroadcastMessage", () => {
+			this.getObjectCount();
+		});
+  }
+
+  getObjectCount() {
+    this.printObjectService.getObjectCount().subscribe(resp => {
+      this.objectCountModel = resp as ObjectCountViewModel;
+      this.setCounterValue();
+    }, err => {
+      throwError(err);
+    })
+  }
+
+  setCounterValue() {
+    this.neumericCountFormControl?.setValue(this.objectCountModel.numberCount);
+    this.floatCountFormControl?.setValue(this.objectCountModel.floatCount);
+    this.alphaneumericCountFormControl?.setValue(this.objectCountModel.characterCount);
+  }
 
   get fileSizeFormControl() {
     return this.printObjectForm.get('fileSize');
@@ -78,6 +113,8 @@ export class PrintableObjectComponent implements OnInit {
 
   stopCounting() {
     this.printObjectService.stopCountPrintObject().subscribe(resp => {
+      this.objectCountModel = resp as ObjectCountViewModel;
+      this.setCounterValue();
     }, err => {
       throwError(err);
     });

@@ -24,4 +24,11 @@ namespace InternetNow_API.DTOs
         public int FloatCount { get; set; } = 0;
         public List<string> contentItems { get; set; } = new List<string>();
     }
+
+    public class ObjectCounter
+    {
+        public int NumberCount { get; set; }
+        public int FloatCount { get; set; }
+        public int CharacterCount { get; set; }
+    }
 }
