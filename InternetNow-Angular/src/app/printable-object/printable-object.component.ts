@@ -46,6 +46,9 @@ export class PrintableObjectComponent implements OnInit {
 			this.getObjectCount();
 		});
   }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   getObjectCount() {
     this.printObjectService.getObjectCount().subscribe(resp => {
