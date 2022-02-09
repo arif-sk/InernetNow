@@ -1,20 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { throwError, interval, Subscription } from 'rxjs';
 import { ObjectCountViewModel, PrintObjectViewModel } from '../Model/common.viewmodel';
 import { PrintObjectService } from '../services/print-object.service';
 import * as signalR from '@microsoft/signalr';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-printable-object',
   templateUrl: './printable-object.component.html',
   styleUrls: ['./printable-object.component.css'],
 })
 export class PrintableObjectComponent implements OnInit {
-  subscription: Subscription;
+  subscription!: Subscription;
   objectCountModel: ObjectCountViewModel = new ObjectCountViewModel();
+  @ViewChild('configDistributionModal', { static: true })
+  configDistributionModal!: TemplateRef<any>;
+  configureDistributionModalRef!: NgbModalRef;
   printObjectForm= new FormGroup({
-    'fileSize': new FormControl(''),
+    'fileSize': new FormControl(null, [Validators.required]),
     'isNeumericCount': new FormControl(true),
     'isAlphaneumericCount': new FormControl(true),
     'isFloatCount': new FormControl(true),
@@ -23,18 +27,25 @@ export class PrintableObjectComponent implements OnInit {
     'floatCount': new FormControl()
   });
 
+  configureDistributionForm = new FormGroup({
+    'numericPercentage': new FormControl(),
+    'alphanumericPercentage': new FormControl(),
+    'floatPercentage': new FormControl()
+  });
+
   constructor(private printObjectService: PrintObjectService,
-    private router: Router) {
+    private router: Router,
+    private modalService: NgbModal) {
   }
 
   ngOnInit() {
     
     const source = interval(1000);
     this.subscription = source.subscribe(val => this.getObjectCount());
-
+    // this.getObjectCount();
     const connection = new signalR.HubConnectionBuilder()
 			.configureLogging(signalR.LogLevel.Information)
-			.withUrl("http://localhost:5000/notify")
+			.withUrl("https://localhost:5000/hubs/notify")
 			.build();
 
 		connection.start().then(function () {
@@ -102,6 +113,10 @@ export class PrintableObjectComponent implements OnInit {
       alert("Please select an option.");
       return;
     }
+    if(this.printObjectForm.invalid) {
+      this.printObjectForm.markAllAsTouched();
+      return;
+    }
     let printObject = new PrintObjectViewModel({
       fileSize: fileSize,
       isNeumericCount: isNeumeric,
@@ -125,5 +140,13 @@ export class PrintableObjectComponent implements OnInit {
 
   generateReport() {
     this.router.navigate(['/report']);
+  }
+
+  configureDistribution() {
+    this.configureDistributionModalRef = this.modalService.open(this.configDistributionModal, { size: 'md', backdrop: 'static', centered: true, keyboard: false });
+  }
+
+  applyConfigureDistribution() {
+    
   }
 }

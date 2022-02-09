@@ -67,8 +67,7 @@ namespace InternetNow_API.Controllers
         {
             InitializeCounter();
             DeleteFile();
-            if (printObject.FileSize > 0) WriteFileBySize(printObject);
-            else WriteFileWithoutSize(printObject);
+            WriteFileBySize(printObject);
             return null;
         }
 
@@ -107,19 +106,6 @@ namespace InternetNow_API.Controllers
             if(!string.IsNullOrEmpty(alphaNeumeric)) result += alphaNeumeric + ",";
             if(!string.IsNullOrEmpty(floatNumber)) result += floatNumber + ",";
             return result;
-        }
-
-        private void WriteFileWithoutSize(PrintObject printObject)
-        { 
-            while (true)
-            {
-                if (IsStopCounter)
-                {
-                    IsStopCounter = false;
-                    break;
-                }
-                WriteLog(generateLine(printObject));
-            }
         }
 
         private FileContent GetFile()

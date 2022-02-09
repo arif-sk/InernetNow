@@ -4,7 +4,12 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-              <h5>Printable Object Counter</h5>
+              <div id="block_container">
+                <div id="bloc1"><h5>Printable Object Counter</h5></div>
+                <div id="bloc2" class="pl-2" (click)="configureDistribution()">
+                  <i class="fa fa-regular fa-gear" title="Configure distribution percentage of data"></i>
+                </div>
+              </div>
            <form [formGroup]="printObjectForm">
                 <div class="row mt-5">
                     <div class="col-md-5">
@@ -31,7 +36,8 @@
                       <div class="col-md-6 mb-5">
                         <label for="subject">Size of the output file(KB)</label><span class="required-field">*</span>
                         <input type="number" class="form-control" id="fileSize" name="fileSize"
-                            placeholder="File size" formControlName="fileSize">
+                            placeholder="File size" formControlName="fileSize"
+                            [ngClass]="{'is-invalid':printObjectForm.invalid && printObjectForm.touched}">
                       </div>
                     </div>
                 </div>
@@ -86,3 +92,46 @@
         </div>
     </div>
 </div>
+
+<ng-template #configDistributionModal let-configDistributionModal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Configure Distributiobion</h4>
+      <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal" (click)="configDistributionModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="configureDistributionForm">
+      <div class="row form-group">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+            <label for="numericPercentage" class="float-end">Numeric (%)</label>
+        </div>
+        <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6">
+            <input type="number" class="form-control percent-field" name="numericPercentage" formControlName='numericPercentage'/>
+        </div>                       
+     </div>
+     
+     <div class="row form-group">
+        <div class="col-xl-4 col-lg-3 col-md-3 col-sm-6">
+            <label for="alphanumericPercentage" class="float-end">Alphanumeric (%)</label>
+        </div>
+        <div class="col-xl-5 col-lg-3 col-md-3 col-sm-6">
+            <input type="number" class="form-control percent-field" name="alphanumericPercentage" formControlName='alphanumericPercentage'/>
+        </div>                       
+      </div>
+      <div class="row form-group">
+        <div class="col-xl-4 col-lg-3 col-md-3 col-sm-6">
+            <label for="floatPercentage" class="float-end">Float (%)</label>
+        </div>
+        <div class="col-xl-5 col-lg-3 col-md-3 col-sm-6">
+            <input type="number" class="form-control percent-field" name="floatPercentage" formControlName='floatPercentage'/>
+        </div>                       
+     </div>
+  </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary float-left" data-dismiss="modal"
+        (click)="configDistributionModal.dismiss()">Close</button>
+    <button type="button" class="btn btn-primary float-right" (click)="applyConfigureDistribution()">Apply Changes</button>
+  </div>
+</ng-template>
