@@ -5,74 +5,94 @@ namespace InternetNowV2_API.Services.Repositories
 {
     public class PrintObjectRepo : IPrintObjectRepo
     {
-        private string GenerateAlphaNeumeric()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            Random random = new Random();
-            return new string(Enumerable.Repeat(chars, 10)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
         public async Task<string> GenerateObjectString(PrintObject printObject)
         {
             string result = "";
             if (printObject.IsNeumericCount == true && printObject.IsAlphaneumericCount == true && printObject.IsFloatCount == false)
             {
-                var intObj = GenerateRandomNumeric();
-                var alphaNumericObject = GenerateAlphaNeumeric();
+                var intObj = GenerateRandomNumeric(printObject.NumericPercentage);
+                var alphaNumericObject = GenerateAlphaNeumeric(printObject.AlphanumericPercentage);
                 result = $"{intObj},{alphaNumericObject},";
             }
             else if (printObject.IsNeumericCount == true && printObject.IsAlphaneumericCount == false && printObject.IsFloatCount == false)
             {
-                var intObj = GenerateRandomNumeric();
+                var intObj = GenerateRandomNumeric(printObject.NumericPercentage);
                 result = $"{intObj},";
             }
             else if (printObject.IsNeumericCount == false && printObject.IsAlphaneumericCount == true && printObject.IsFloatCount == true)
             {
-                var alphaNumericObject = GenerateAlphaNeumeric();
-                var floatObj = GenerateRandomFloat();
+                var alphaNumericObject = GenerateAlphaNeumeric(printObject.AlphanumericPercentage);
+                var floatObj = GenerateRandomFloat(printObject.FloatPercentage);
                 result = $"{alphaNumericObject},{floatObj},";
             }
             else if (printObject.IsNeumericCount == true && printObject.IsAlphaneumericCount == false && printObject.IsFloatCount == true)
             {
-                var intObj = GenerateRandomNumeric();
-                var floatObj = GenerateRandomFloat();
+                var intObj = GenerateRandomNumeric(printObject.NumericPercentage);
+                var floatObj = GenerateRandomFloat(printObject.FloatPercentage);
                 result = $"{intObj},{floatObj},";
             }
             else if (printObject.IsNeumericCount == false && printObject.IsAlphaneumericCount == false && printObject.IsFloatCount == true)
             {
-                var floatObj = GenerateRandomFloat();
+                var floatObj = GenerateRandomFloat(printObject.FloatPercentage);
                 result = $"{floatObj},";
             }
             else if (printObject.IsNeumericCount == false && printObject.IsAlphaneumericCount == true && printObject.IsFloatCount == false)
             {
-                var alphaNumericObject = GenerateAlphaNeumeric();
+                var alphaNumericObject = GenerateAlphaNeumeric(printObject.AlphanumericPercentage);
                 result = $"{alphaNumericObject},";
             }
             else
             {
-                var intObj = GenerateRandomNumeric();
-                var alphaNumericObject = GenerateAlphaNeumeric();
-                var floatObj = GenerateRandomFloat();
+                var intObj = GenerateRandomNumeric(printObject.NumericPercentage);
+                var alphaNumericObject = GenerateAlphaNeumeric(printObject.AlphanumericPercentage);
+                var floatObj = GenerateRandomFloat(printObject.FloatPercentage);
                 result = $"{intObj},{alphaNumericObject},{floatObj},";
             }
 
             return result;
         }
 
-        private float GenerateRandomFloat()
+        private string GenerateRandomFloat(int length)
         {
-            Random random = new Random();
-            double val = (random.NextDouble() * (1000 - 1) + 1);
-            return (float)val;
+            var strObj = "";
+            while (length > 0)
+            {
+                Random random = new Random();
+                double fVal = (random.NextDouble() * (1000 - 1) + 1);
+                strObj += fVal.ToString() + ",";
+                length--;
+            }
+            return strObj.TrimEnd(',');
         }
 
-        private int GenerateRandomNumeric()
+        private string GenerateRandomNumeric(int length)
         {
-            Random random = new Random();
-            int number = random.Next(1, int.MaxValue);
-            return number;
+            var strObj = "";
+            while(length > 0)
+            {
+                Random random = new Random();
+                int number = random.Next(1, int.MaxValue);
+                strObj += number + ",";
+                length--;
+            }
+            return strObj.TrimEnd(',');
         }
+
+        private string GenerateAlphaNeumeric(int length)
+        {
+            var strObj = "";
+            while (length > 0)
+            {
+                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                Random random = new Random();
+                var str = new string(Enumerable.Repeat(chars, 10)
+                    .Select(s => s[random.Next(s.Length)]).ToArray());
+                strObj += str + ",";
+                length--;
+            }
+            return strObj.TrimEnd(',');
+        }
+
 
         public async Task<FileContent> GetReportInfo()
         {

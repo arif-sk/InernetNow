@@ -12,9 +12,9 @@ namespace InternetNow_API.DTOs
         public bool IsAlphaneumericCount { get; set; }
         public bool IsFloatCount { get; set; }
         public bool ApplyConfiguration { get; set; }
-        public int? NumericPercentage { get; set; }
-        public int? AlphanumericPercentage { get; set; }
-        public int? FloatPercentage { get; set; }
+        public int NumericPercentage { get; set; }
+        public int AlphanumericPercentage { get; set; }
+        public int FloatPercentage { get; set; }
     }
 
     public class FileContent

@@ -48,7 +48,7 @@
                 </div>
                 <div class="row mb-5">
                   <div class="col-md-12">
-                    <button type="button" class="btn btn-success button-rounded" (click)="startCounting()">
+                    <button type="button" class="btn btn-success button-rounded" (click)="startCounting()" [disabled]="processStarted">
                       Start
                     </button>
                     <button type="button" class="btn btn-danger button-rounded ml-5" (click)="stopCounting()">

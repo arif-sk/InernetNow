@@ -27,8 +27,12 @@ namespace InternetNow_API.Controllers
         }
 
         [HttpPost("count")]
-        public async Task<IActionResult> StartCount(PrintObject printObject)
+        public async Task<ActionResult> StartCount(PrintObject printObject)
         {
+            HttpContext.Session.SetString("IsStopped", "false");
+
+            var hasStoppe = HttpContext.Session.GetString("IsStopped");
+
             //Initialize Count
             NumberCount = 0;
             FloatCount = 0;
@@ -45,26 +49,28 @@ namespace InternetNow_API.Controllers
             while (fileSizeInKB < printObject.FileSize)
             {
                 var hasStopped = HttpContext.Session.GetString("IsStopped");
-                if (!string.IsNullOrEmpty(hasStopped) && hasStopped == "true")
+                if (IsStopCounter == true)
                 {
                     IsStopCounter = false;
                     //HttpContext.Session.Clear();
                     break;
                 }
                 var resultString = await _printObjectRepo.GenerateObjectString(printObject);
-                if (printObject.IsNeumericCount == true) NumberCount++;
-                if (printObject.IsFloatCount == true) FloatCount++;
-                if (printObject.IsAlphaneumericCount == true) CharacterCount++;
+                if (printObject.IsNeumericCount == true) NumberCount += printObject.NumericPercentage;
+                if (printObject.IsFloatCount == true) FloatCount += printObject.FloatPercentage;
+                if (printObject.IsAlphaneumericCount == true) CharacterCount += printObject.AlphanumericPercentage;
                 await _printObjectRepo.WriteLog(resultString);
                 fileSize = new FileInfo(pathToSave).Length;
                 fileSizeInKB = fileSize / 1024;
             }
-            return Ok(printObject);
+            return Ok(true);
         }
 
         [HttpPost("stopcount")]
-        public async Task<IActionResult> StopCount()
+        public async Task<ActionResult> StopCount()
         {
+            var hasStoppe = HttpContext.Session.GetString("IsStopped");
+
             HttpContext.Session.SetString("IsStopped", "true");
 
             var hasStopped = HttpContext.Session.GetString("IsStopped");
@@ -80,7 +86,7 @@ namespace InternetNow_API.Controllers
         }
 
         [HttpGet("generatereport")]
-        public async Task<IActionResult> GenerateReport()
+        public async Task<ActionResult> GenerateReport()
         {
             var hasStopped = HttpContext.Session.GetString("IsStopped");
             var fileContent = await _printObjectRepo.GetReportInfo();
@@ -88,7 +94,7 @@ namespace InternetNow_API.Controllers
         }
 
         [HttpGet("broadcastcounter")]
-        public async Task<IActionResult> BroadcastCounter()
+        public async Task<ActionResult> BroadcastCounter()
         {
             var objectCounter = new ObjectCounter()
             {
