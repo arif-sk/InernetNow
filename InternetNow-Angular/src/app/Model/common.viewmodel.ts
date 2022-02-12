@@ -3,18 +3,20 @@ export class PrintObjectViewModel {
     (this.fileSize = 0), (this.isNeumericCount = false);
     this.isAlphaneumericCount = false;
     this.isFloatCount = false;
-    (this.neumericCount = 0),
-      (this.alphaNeumericCount = 0),
-      (this.floatCount = 0);
+    this.applyConfiguration = false;
+    this.numericPercentage = 0;
+    this.alphanumericPercentage = 0;
+    this.floatPercentage = 0;
     Object.assign(this, init);
   }
   fileSize: number;
   isNeumericCount: boolean;
   isAlphaneumericCount: boolean;
   isFloatCount: boolean;
-  neumericCount: number;
-  alphaNeumericCount: number;
-  floatCount: number;
+  applyConfiguration: boolean;
+  numericPercentage: number;
+  alphanumericPercentage: number;
+  floatPercentage: number;
 }
 
 export class FileContentViewModel {

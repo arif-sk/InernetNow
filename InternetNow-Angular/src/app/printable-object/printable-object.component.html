@@ -1,16 +1,21 @@
 <div class="row m-1">
     <div class="col-md-12">
         <div class="profile-container p-5">
+          <form [formGroup]="printObjectForm">
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
               <div id="block_container">
                 <div id="bloc1"><h5>Printable Object Counter</h5></div>
-                <div id="bloc2" class="pl-2" (click)="configureDistribution()">
-                  <i class="fa fa-regular fa-gear" title="Configure distribution percentage of data"></i>
+                <!-- Default switch -->
+                <div class="custom-control custom-switch pl-5">
+                  <input type="checkbox" class="custom-control-input" id="customSwitches" formControlName="applyConfiguration">
+                  <label class="custom-control-label" for="customSwitches">Apply Configuration</label>
                 </div>
+                <!-- <div id="bloc2" class="pl-2" (click)="configureDistribution()">
+                  <i class="fa fa-regular fa-gear" title="Configure distribution percentage of data"></i>
+                </div> -->
               </div>
-           <form [formGroup]="printObjectForm">
                 <div class="row mt-5">
                     <div class="col-md-5">
                         <div class="form-check">
@@ -86,9 +91,9 @@
               </button>
             </div>
           </div>
-           </form>
             </div>
           </div>
+        </form>
         </div>
     </div>
 </div>
@@ -96,7 +101,7 @@
 <ng-template #configDistributionModal let-configDistributionModal>
   <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Configure Distributiobion</h4>
-      <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal" (click)="configDistributionModal.dismiss()">
+      <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal" (click)="closeConfigurationModal()">
         <span aria-hidden="true">&times;</span>
       </button>
   </div>
@@ -127,11 +132,24 @@
             <input type="number" class="form-control percent-field" name="floatPercentage" formControlName='floatPercentage'/>
         </div>                       
      </div>
+     <div class="row">
+       <div class="col-md-10">
+         <hr />
+       </div>
+     </div>
+     <div class="row form-group">
+      <div class="col-md-5 text-end">
+          <label for="total" class="text-end"><strong>Total (%)</strong></label>
+      </div>
+      <div class="col-md-5">
+          <span><strong>{{totalPercentage}}%</strong> </span>
+      </div>
+  </div>
   </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary float-left" data-dismiss="modal"
-        (click)="configDistributionModal.dismiss()">Close</button>
+        (click)="closeConfigurationModal()">Close</button>
     <button type="button" class="btn btn-primary float-right" (click)="applyConfigureDistribution()">Apply Changes</button>
   </div>
 </ng-template>

@@ -1,6 +1,4 @@
-using System;
-
-namespace InternetNow_API
+namespace InternetNowV2_API
 {
     public class WeatherForecast
     {
@@ -10,6 +8,6 @@ namespace InternetNow_API
 
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 
-        public string Summary { get; set; }
+        public string? Summary { get; set; }
     }
 }

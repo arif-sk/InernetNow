@@ -11,12 +11,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PrintObjectService } from './services/print-object.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ReportComponent } from './report/report.component';
+import { AppToastsComponent } from './toast/toast.component';
+import { ToastService } from './services/toastService';
 
 @NgModule({
   declarations: [
     AppComponent,
     PrintableObjectComponent,
-    ReportComponent
+    ReportComponent,
+    AppToastsComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,7 @@ import { ReportComponent } from './report/report.component';
     NgbModule,
     HttpClientModule
   ],
-  providers: [PrintObjectService],
+  providers: [PrintObjectService, ToastService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

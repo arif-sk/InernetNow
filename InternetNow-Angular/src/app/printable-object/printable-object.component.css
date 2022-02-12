@@ -12,3 +12,7 @@
   display: flex;
   justify-content: start;
 }
+
+.text-end{
+  text-align: right;
+}
