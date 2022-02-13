@@ -21,6 +21,8 @@ namespace InternetNowV2_API.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            HttpContext.Session.SetString("IsStopped", "false");
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

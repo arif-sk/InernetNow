@@ -26,6 +26,7 @@ namespace API
             services.AddCors();
             services.AddTransient<IPrintObjectRepo, PrintObjectRepo>();
             services.AddMvc();
+            services.AddMemoryCache();
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromHours(1);
             });

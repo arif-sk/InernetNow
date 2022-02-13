@@ -29,10 +29,6 @@ namespace InternetNow_API.Controllers
         [HttpPost("count")]
         public async Task<ActionResult> StartCount(PrintObject printObject)
         {
-            HttpContext.Session.SetString("IsStopped", "false");
-
-            var hasStoppe = HttpContext.Session.GetString("IsStopped");
-
             //Initialize Count
             NumberCount = 0;
             FloatCount = 0;
@@ -69,12 +65,9 @@ namespace InternetNow_API.Controllers
         [HttpPost("stopcount")]
         public async Task<ActionResult> StopCount()
         {
-            var hasStoppe = HttpContext.Session.GetString("IsStopped");
-
-            HttpContext.Session.SetString("IsStopped", "true");
-
-            var hasStopped = HttpContext.Session.GetString("IsStopped");
-
+            // Tried to use session but in other controller getting session value null.
+            // Couldn't resolve that issue.
+            HttpContext.Session.SetString("IsStopped", "false"); 
             IsStopCounter = true;
             var objectCounter = new ObjectCounter()
             {
@@ -88,7 +81,6 @@ namespace InternetNow_API.Controllers
         [HttpGet("generatereport")]
         public async Task<ActionResult> GenerateReport()
         {
-            var hasStopped = HttpContext.Session.GetString("IsStopped");
             var fileContent = await _printObjectRepo.GetReportInfo();
             return Ok(fileContent);
         }
